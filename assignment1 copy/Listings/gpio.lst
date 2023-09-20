@@ -1,0 +1,40 @@
+C166 COMPILER V7.57.0, GPIO                                                                09/21/2023 08:39:19 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE GPIO
+OBJECT MODULE PLACED IN .\Objects\gpio.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE gpio.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBUG PRINT(.\L
+                    -istings\gpio.lst) TABS(2) OBJECT(.\Objects\gpio.obj) 
+
+ stmt lvl     source
+
+    1         // a1839619
+    2         
+    3         # include "gpio.h"
+    4         
+    5         void  IOInit( void  ) {
+    6  1        
+    7  1        
+    8  1        
+    9  1      }
+
+
+MODULE INFORMATION:   INITIALIZED  UNINITIALIZED
+  CODE SIZE        =           2     --------
+  NEAR-CONST SIZE  =    --------     --------
+  FAR-CONST SIZE   =    --------     --------
+  HUGE-CONST SIZE  =    --------     --------
+  XHUGE-CONST SIZE =    --------     --------
+  NEAR-DATA SIZE   =    --------     --------
+  FAR-DATA SIZE    =    --------     --------
+  XHUGE-DATA SIZE  =    --------     --------
+  IDATA-DATA SIZE  =    --------     --------
+  SDATA-DATA SIZE  =    --------     --------
+  BDATA-DATA SIZE  =    --------     --------
+  HUGE-DATA SIZE   =    --------     --------
+  BIT SIZE         =    --------     --------
+  INIT'L SIZE      =    --------     --------
+END OF MODULE INFORMATION.
+
+
+C166 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

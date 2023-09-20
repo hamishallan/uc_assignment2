@@ -1,0 +1,70 @@
+C166 COMPILER V7.57.0, DRIVER                                                              09/21/2023 08:39:18 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE DRIVER
+OBJECT MODULE PLACED IN .\Objects\driver.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE driver.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBUG PRINT(.
+                    -\Listings\driver.lst) TABS(2) OBJECT(.\Objects\driver.obj) 
+
+ stmt lvl     source
+
+    1         // a1839619
+    2         // Driver functions
+    3         
+    4         #include "reg167.h"
+    5         #include "driver.h"
+    6         #include "pindefs.h"
+    7         
+    8         ///**
+    9         //    \fn         void setSFR(volatile unsigned int *reg, unsigned int value);
+   10         //    \brief      Set the value of a specific SFR (Special Function Register)
+   11         //    \param[in]  reg   Pointer to the SFR
+   12         //    \param[in]  value Value to be set to the SFR
+   13         //*/
+   14         //static void setSFR(volatile unsigned int *reg, unsigned int value) {
+   15         //  *reg = value;
+   16         //}
+   17         
+   18         ///**
+   19         //    \fn         unsigned int readPin(volatile unsigned int *reg, unsigned int pin);
+   20         //    \brief      Read the value of a specific pin
+   21         //    \param[in]  reg   Pointer to the register controlling the pin
+   22         //    \param[in]  pin   Pin number
+   23         //    \return     Value of the pin (0 or 1)
+   24         //*/
+   25         //static unsigned int readPin(volatile unsigned int *reg, unsigned int pin) {
+   26         //  return (*reg & (1U << (pin))) ? 1 : 0;
+   27         //}
+   28         
+   29         void setPin(volatile unsigned int *reg, unsigned int pin, unsigned int value) {
+   30  1          if (value == 1U) {
+   31  2              // Set the pin to 1 by OR-ing with a mask
+   32  2              *reg |= (1U << (pin));
+   33  2          } else {
+   34  2              // Set the pin to 0 by AND-ing with the inverse of the mask
+   35  2              *reg &= ~(1U << pin);
+   36  2          }
+   37  1      }
+
+
+MODULE INFORMATION:   INITIALIZED  UNINITIALIZED
+  CODE SIZE        =          56     --------
+  NEAR-CONST SIZE  =    --------     --------
+  FAR-CONST SIZE   =    --------     --------
+  HUGE-CONST SIZE  =    --------     --------
+  XHUGE-CONST SIZE =    --------     --------
+  NEAR-DATA SIZE   =    --------     --------
+  FAR-DATA SIZE    =    --------     --------
+  XHUGE-DATA SIZE  =    --------     --------
+  IDATA-DATA SIZE  =    --------     --------
+  SDATA-DATA SIZE  =    --------     --------
+  BDATA-DATA SIZE  =    --------     --------
+  HUGE-DATA SIZE   =    --------     --------
+  BIT SIZE         =    --------     --------
+  INIT'L SIZE      =    --------     --------
+C166 COMPILER V7.57.0, DRIVER                                                              09/21/2023 08:39:18 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C166 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

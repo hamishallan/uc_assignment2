@@ -1,0 +1,75 @@
+C166 COMPILER V7.57.0, MAIN                                                                09/21/2023 08:39:17 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE main.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBUG PRINT(.\L
+                    -istings\main.lst) TABS(2) OBJECT(.\Objects\main.obj) 
+
+ stmt lvl     source
+
+    1         // a1839619
+    2         // Microcontroller Programming – Assignment 2
+    3         // ------------------------------------------
+    4         
+    5         // Description:
+    6         
+    7         
+    8         #include <reg167.h>
+    9         #include "stdtypes_c167.h"
+   10         #include "serial.h"
+   11         #include "pindefs.h"
+   12         #include "adc.h"
+   13         #include "timer.h"
+   14         
+   15         void main(void) {
+   16  1        
+   17  1        volatile float variable;
+   18  1        int buffer_copy[BUFFER_SIZE];
+   19  1        
+   20  1        ADCInit();
+   21  1        SerialInit();
+   22  1        T3Init();
+   23  1        StartT3();
+   24  1        
+   25  1        
+   26  1        
+   27  1        
+   28  1        // Main loop
+   29  1        while (1) {
+   30  2          
+   31  2          GetADCVal(buffer_copy) ;
+   32  2          
+   33  2          variable = 14.2f;
+   34  2          
+   35  2          DataFormatLine(U0, sizeof(U0), variable);
+   36  2          
+   37  2          variable = 3.1f;
+   38  2          
+   39  2          DataFormatLine(U0, sizeof(U0), variable);
+   40  2          
+   41  2        }
+   42  1      }
+
+
+MODULE INFORMATION:   INITIALIZED  UNINITIALIZED
+  CODE SIZE        =          98     --------
+  NEAR-CONST SIZE  =          16     --------
+  FAR-CONST SIZE   =    --------     --------
+  HUGE-CONST SIZE  =    --------     --------
+  XHUGE-CONST SIZE =    --------     --------
+  NEAR-DATA SIZE   =    --------     --------
+  FAR-DATA SIZE    =    --------     --------
+  XHUGE-DATA SIZE  =    --------     --------
+  IDATA-DATA SIZE  =    --------     --------
+C166 COMPILER V7.57.0, MAIN                                                                09/21/2023 08:39:17 PAGE 2   
+
+  SDATA-DATA SIZE  =    --------     --------
+  BDATA-DATA SIZE  =    --------     --------
+  HUGE-DATA SIZE   =    --------     --------
+  BIT SIZE         =    --------     --------
+  INIT'L SIZE      =    --------     --------
+END OF MODULE INFORMATION.
+
+
+C166 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

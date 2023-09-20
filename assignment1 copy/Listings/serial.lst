@@ -1,0 +1,124 @@
+C166 COMPILER V7.57.0, SERIAL                                                              09/21/2023 08:39:18 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE SERIAL
+OBJECT MODULE PLACED IN .\Objects\serial.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE serial.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBUG PRINT(.
+                    -\Listings\serial.lst) TABS(2) OBJECT(.\Objects\serial.obj) 
+
+ stmt lvl     source
+
+    1         // a1839619
+    2         
+    3         # include "serial.h"
+    4         # include <reg167.h>
+    5         # include <stdio.h>
+    6         
+    7         typedef union {
+    8         
+    9           float float_in;
+   10           char  bytes[sizeof(float)];
+   11         
+   12         } Bytestream_Typedef;
+   13         
+   14         
+   15         
+   16         void SerialInit(){
+   17  1        
+   18  1        // Port 3 direction control register
+   19  1        DP3   |=  0x0400;     // Set P3.10 to output (TxD)
+   20  1        DP3   &=  ~0x0800;    // Set P3.11 to input (RxD)
+   21  1        // Port 3 data register
+   22  1        P3    |=  0x0400;     // Set P3.10 to high (A)
+   23  1        // Transmit interrupt flag
+   24  1        S0TIC =   0x80;       // Set S0TIR - active before last bit transferred
+   25  1                              // (transmission finished)
+   26  1        // Receive interrupt flag
+   27  1        S0RIC =   0x00;       // Set S0RIR - active before last bit received
+   28  1                              // (buffer cleared)
+   29  1        // Set baud rate
+   30  1        S0BG  =   0x40;       // Reload value - 9600 baud
+   31  1        // Serial configuration
+   32  1        S0CON =   0xC011;     // 1000 0000 0001 0001
+   33  1                              // SOM - 8 bit async
+   34  1                              // S0STP - 1 stop bit,
+   35  1                              // Reciever enabled, 
+   36  1                              // S0R - Baudrate generator run bit
+   37  1                              // set Tx to Rx when SOCON = 0x8011
+   38  1      }
+   39         
+   40         
+   41         void SerialSendByte(char byte) {
+   42  1      
+   43  1        while(S0TIR == 0);
+   44  1        S0TIR = 0;
+   45  1        S0TBUF = byte;
+   46  1        
+   47  1      }
+   48         
+   49         
+   50         void SerialSendPayload(unsigned char *payload, unsigned char size_payload) {
+   51  1        
+   52  1        int i;
+   53  1      
+   54  1        for (i=0; i < size_payload; i++) {
+C166 COMPILER V7.57.0, SERIAL                                                              09/21/2023 08:39:18 PAGE 2   
+
+   55  2          
+   56  2            SerialSendByte(payload[i]);
+   57  2          
+   58  2        }
+   59  1      }
+   60         
+   61         
+   62         void SerialSendFloatData(float rawdata) {
+   63  1        
+   64  1        int i;
+   65  1        
+   66  1        Bytestream_Typedef payload;
+   67  1        payload.float_in = rawdata;
+   68  1      
+   69  1        for (i=0; i < sizeof(payload.bytes); i++) {
+   70  2          
+   71  2            SerialSendByte(payload.bytes[i]);
+   72  2          
+   73  2        }
+   74  1      }
+   75         
+   76         
+   77         void DataFormatLine( unsigned char *format_string, unsigned char str_length, float variable ) {
+   78  1        
+   79  1        // if sizeof(str_length > 20) {do something}
+   80  1        
+   81  1        unsigned char str_buf[20];                        // Oversized buffer for variable inputs
+   82  1        
+   83  1        sprintf(str_buf, format_string, variable);      // Formatting a display string
+   84  1        
+   85  1        SerialSendPayload(str_buf, str_length-1);       // Sending the string byte by byte
+   86  1        
+   87  1        SerialSendFloatData(variable);                  // Send raw data using our Union
+   88  1        
+   89  1        SerialSendByte(NEW_LINE);                       // New line
+   90  1        
+   91  1      }
+
+
+MODULE INFORMATION:   INITIALIZED  UNINITIALIZED
+  CODE SIZE        =         284     --------
+  NEAR-CONST SIZE  =    --------     --------
+  FAR-CONST SIZE   =    --------     --------
+  HUGE-CONST SIZE  =    --------     --------
+  XHUGE-CONST SIZE =    --------     --------
+  NEAR-DATA SIZE   =    --------     --------
+  FAR-DATA SIZE    =    --------     --------
+  XHUGE-DATA SIZE  =    --------     --------
+  IDATA-DATA SIZE  =    --------     --------
+  SDATA-DATA SIZE  =    --------     --------
+  BDATA-DATA SIZE  =    --------     --------
+  HUGE-DATA SIZE   =    --------     --------
+  BIT SIZE         =    --------     --------
+  INIT'L SIZE      =    --------     --------
+END OF MODULE INFORMATION.
+
+
+C166 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

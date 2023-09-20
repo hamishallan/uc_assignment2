@@ -1,0 +1,116 @@
+C166 COMPILER V7.57.0, SORTING_MACHINE                                                     08/27/2023 10:51:27 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE SORTING_MACHINE
+OBJECT MODULE PLACED IN .\Objects\sorting_machine.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE sorting_machine.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBU
+                    -G PRINT(.\Listings\sorting_machine.lst) TABS(2) OBJECT(.\Objects\sorting_machine.obj) 
+
+ stmt lvl     source
+
+    1         #include "sorting_machine.h"
+    2         
+    3         // Assuming P2_x are defined elsewhere, for simulation purposes, you can define them as global variables o
+             -r use actual MCU register names.
+    4         
+    5         void main() {
+    6  1          initializeHardware();
+*** WARNING C140 IN LINE 6 OF sorting_machine.c: 'initializeHardware' undefined; assuming 'extern int initializeHardware
+             -()'
+    7  1      
+    8  1          while (1) {
+    9  2              if (isEmergencyStopActivated() || isChuteFull()) {
+*** WARNING C140 IN LINE 9 OF sorting_machine.c: 'isEmergencyStopActivated' undefined; assuming 'extern int isEmergencyS
+             -topActivated()'
+*** WARNING C140 IN LINE 9 OF sorting_machine.c: 'isChuteFull' undefined; assuming 'extern int isChuteFull()'
+   10  3                  pauseOperation();
+*** WARNING C140 IN LINE 10 OF sorting_machine.c: 'pauseOperation' undefined; assuming 'extern int pauseOperation()'
+   11  3              } else {
+   12  3                  if (isItemAtB1()) {
+*** WARNING C140 IN LINE 12 OF sorting_machine.c: 'isItemAtB1' undefined; assuming 'extern int isItemAtB1()'
+   13  4                      ItemType type = analyzeItemType();
+*** WARNING C140 IN LINE 13 OF sorting_machine.c: 'analyzeItemType' undefined; assuming 'extern int analyzeItemType()'
+   14  4                      setGatesBasedOnItemType(type);
+*** WARNING C140 IN LINE 14 OF sorting_machine.c: 'setGatesBasedOnItemType' undefined; assuming 'extern int setGatesBase
+             -dOnItemType()'
+   15  4                      moveItem();
+*** WARNING C140 IN LINE 15 OF sorting_machine.c: 'moveItem' undefined; assuming 'extern int moveItem()'
+   16  4                  }
+   17  3              }
+   18  2          }
+   19  1      }
+   20         
+   21         void initializeHardware() {
+*** ERROR C53 IN LINE 21 OF sorting_machine.c: redefinition of 'initializeHardware': different return types
+   22  1          // Initialize all sensors and actuators
+   23  1          // For simulation purposes, you might want to set initial values or configurations here.
+   24  1      }
+   25         
+   26         bool isEmergencyStopActivated() {
+*** ERROR C42 IN LINE 26 OF sorting_machine.c: 'isEmergencyStopActivated': not in formal parameter list
+*** ERROR C25 IN LINE 26 OF sorting_machine.c: syntax error near '{'
+   27             return EMERGENCY_STOP == LOW;
+   28         }
+   29         
+   30         bool isChuteFull() {
+   31             return SENSOR_B2 == LOW && SENSOR_B3 == LOW;
+   32         }
+   33         
+   34         bool isItemAtB1() {
+   35             return SENSOR_B1 == LOW;
+   36         }
+   37         
+   38         ItemType analyzeItemType() {
+   39             bool isMetallic = SENSOR_D1 == HIGH;
+C166 COMPILER V7.57.0, SORTING_MACHINE                                                     08/27/2023 10:51:27 PAGE 2   
+
+   40             bool isReflective = SENSOR_D2 == HIGH;
+   41         
+   42             if (isMetallic && isReflective) {
+   43                 return METALLIC_REFLECTIVE;
+   44             } else if (isMetallic && !isReflective) {
+   45                 return METALLIC_NON_REFLECTIVE;
+   46             } else if (!isMetallic && isReflective) {
+   47                 return NON_METALLIC_REFLECTIVE;
+   48             } else {
+   49                 return NON_METALLIC_NON_REFLECTIVE;
+   50             }
+   51         }
+   52         
+   53         void setGatesBasedOnItemType(ItemType type) {
+   54             switch (type) {
+   55                 case METALLIC_REFLECTIVE:
+   56                 case METALLIC_NON_REFLECTIVE:
+   57                     // Set gates for E3
+   58                     SERVOMOTOR2 = LOW;
+   59                     SERVOMOTOR3 = LOW;
+   60                     break;
+   61                 case NON_METALLIC_REFLECTIVE:
+   62                     // Set gates for E2
+   63                     SERVOMOTOR2 = HIGH;
+   64                     SERVOMOTOR3 = LOW;
+   65                     break;
+   66                 case NON_METALLIC_NON_REFLECTIVE:
+   67                     // Set gates for E1
+   68                     SERVOMOTOR2 = LOW;
+   69                     SERVOMOTOR3 = HIGH;
+   70                     break;
+   71             }
+   72         }
+   73         
+   74         void moveItem() {
+   75             // Logic to move item based on set gates
+   76             // For example, start the conveyor belts
+   77             CONVEYOR_BELT1 = HIGH;
+   78             CONVEYOR_BELT2 = HIGH;
+   79         }
+   80         
+   81         void pauseOperation() {
+   82             // Stop all operations and wait for reset or resume
+   83             CONVEYOR_BELT1 = LOW;
+   84             CONVEYOR_BELT2 = LOW;
+   85         }
+   86         
+*** ERROR C7 IN LINE 87 OF sorting_machine.c: compilation aborted
+
+C166 COMPILATION COMPLETE.  8 WARNING(S),  4 ERROR(S)

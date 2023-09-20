@@ -1,0 +1,98 @@
+C166 COMPILER V7.57.0, ADC                                                                 09/21/2023 08:39:19 PAGE 1   
+
+
+C166 COMPILER V7.57.0, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\Objects\adc.obj
+COMPILER INVOKED BY: C:\Keil_v5\c166\bin\C166.EXE adc.c WARNINGLEVEL(3) OPTIMIZE(0,SPEED) BROWSE MOD167 DEBUG PRINT(.\Li
+                    -stings\adc.lst) TABS(2) OBJECT(.\Objects\adc.obj) 
+
+ stmt lvl     source
+
+    1         // a1839619
+    2         
+    3         # include "adc.h"
+    4         # include <reg167.h>
+    5         # include "timer.h"
+    6         
+    7         static int adc_buffer[BUFFER_SIZE]  ;
+    8         static int adc_buffer2[BUFFER_SIZE] ;
+    9         static int index = 0  ;
+   10         
+   11         void ADC_ISR(void) interrupt 0x28 {
+   12  1        
+   13  1          if (T3OTL == 1) {
+   14  2            T3OTL = 0 ;
+   15  2            StartT3( )  ;
+   16  2          }
+   17  1          else {
+   18  2          }
+   19  1            
+   20  1        if ( (ADDAT & 0xF000) == 0) {
+   21  2          adc_buffer[index] = (ADDAT & 0x03FF);
+   22  2        }
+   23  1        else {
+   24  2          adc_buffer2[index]  = (ADDAT & 0x03FF);
+   25  2        }
+   26  1      
+   27  1      }
+   28         
+   29         void GetADCVal(int *buffer_copy) {
+   30  1        
+   31  1        int i;
+   32  1        
+   33  1        for(i = 0 ; i< BUFFER_SIZE ; i++) {
+   34  2        
+   35  2          buffer_copy[i] = adc_buffer[i]  ;
+   36  2        
+   37  2        }
+   38  1        
+   39  1      }
+   40                                         
+   41         
+   42         void ADCInit(void){
+   43  1        
+   44  1        //ADCON = 0x0004  ; // Select channel 4 of port 5
+   45  1        
+   46  1        IEN = 1 ;         // Enable interrupts (PSW |= 0x0800)
+   47  1        
+   48  1        ADCIC = 0x0044  ; // Enable ADC interrupts ILVL = 1, GLVL = 0
+   49  1        
+   50  1        ADCON = 0x0000  ; // Reset ADCON register
+   51  1        
+   52  1        ADCON |=  AD_CH_SELECT  ;           // ADCH   - Select channel 1 and 0 in autoscan mode
+   53  1        ADCON |=  ( AD_MODE_SELECT << 4 ) ; // ADM    - Select auto scan continuous conversion
+   54  1        ADWR  = WAIT_FOR_READ_CONTROL ;     // - 
+C166 COMPILER V7.57.0, ADC                                                                 09/21/2023 08:39:19 PAGE 2   
+
+   55  1        ADCIN = CHANNEL_INJECTION     ;     // -
+   56  1        ADCON |=  ( ADSTC << 12 )     ;     // ADSTC  - 
+   57  1        ADCON |=  ( ADCTC << 14 )     ;     // ADCTC  - 
+   58  1      
+   59  1      }                                       
+   60         
+   61         void StartADC( void ) {
+   62  1      
+   63  1        ADST = 1;   // ADST - Start ADC conversion
+   64  1      
+   65  1      }
+
+
+MODULE INFORMATION:   INITIALIZED  UNINITIALIZED
+  CODE SIZE        =         314     --------
+  NEAR-CONST SIZE  =    --------     --------
+  FAR-CONST SIZE   =    --------     --------
+  HUGE-CONST SIZE  =    --------     --------
+  XHUGE-CONST SIZE =    --------     --------
+  NEAR-DATA SIZE   =           6     --------
+  FAR-DATA SIZE    =    --------     --------
+  XHUGE-DATA SIZE  =    --------     --------
+  IDATA-DATA SIZE  =    --------     --------
+  SDATA-DATA SIZE  =    --------     --------
+  BDATA-DATA SIZE  =    --------     --------
+  HUGE-DATA SIZE   =    --------     --------
+  BIT SIZE         =    --------     --------
+  INIT'L SIZE      =           6     --------
+END OF MODULE INFORMATION.
+
+
+C166 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
